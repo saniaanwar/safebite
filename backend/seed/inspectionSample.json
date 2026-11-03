@@ -1,0 +1,27 @@
+[
+  {
+    "restaurantId": "demo-rest-001",
+    "restaurantName": "Demo Harbor Kitchen",
+    "neighborhood": "Back Bay",
+    "address": "100 Example Street",
+    "inspectionDate": "2026-10-01",
+    "result": "fail",
+    "violations": [
+      {
+        "code": "DEMO-01",
+        "description": "Handwashing supplies were missing."
+      }
+    ],
+    "isSynthetic": true
+  },
+  {
+    "restaurantId": "demo-rest-001",
+    "restaurantName": "Demo Harbor Kitchen",
+    "neighborhood": "Back Bay",
+    "address": "100 Example Street",
+    "inspectionDate": "2026-10-08",
+    "result": "pass",
+    "violations": [],
+    "isSynthetic": true
+  }
+]
