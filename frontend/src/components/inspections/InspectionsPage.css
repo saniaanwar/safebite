@@ -1,0 +1,38 @@
+/* Shared theme variables can override these provisional defaults. */
+.inspections-page {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--sb-content-width, 72rem);
+  margin: 0 auto;
+  padding: var(--sb-page-padding, 2rem 1rem);
+  color: var(--sb-color-text, #223746);
+  font-family: var(--sb-font-family, system-ui, sans-serif);
+  line-height: 1.6;
+}
+
+.inspections-page__notice {
+  margin: 0 0 2rem;
+  padding: 1rem;
+  border: 1px solid var(--sb-color-border, #b9c3ca);
+  border-radius: 0.5rem;
+  background: var(--sb-color-surface, #eef3f4);
+}
+
+.inspections-page__eyebrow {
+  margin: 0;
+  color: var(--sb-color-muted, #52616c);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.inspections-page__heading h1 {
+  margin: 0.25rem 0 0.75rem;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.2;
+}
+
+.inspections-page__intro {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--sb-color-muted, #52616c);
+}
