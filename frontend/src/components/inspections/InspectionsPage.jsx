@@ -1,7 +1,28 @@
+import { useState } from "react";
+import RestaurantSearch from "./RestaurantSearch";
 import "./InspectionsPage.css";
 
-// Entry point for the restaurant inspection workspace.
+// These match the current synthetic dataset.
+const NEIGHBORHOODS = [
+  "Back Bay",
+  "Beacon Hill",
+  "Dorchester",
+  "East Boston",
+  "Jamaica Plain",
+];
+
 function InspectionsPage() {
+  // Results will later use these applied filters.
+  const [filters, setFilters] = useState({
+    name: "",
+    neighborhood: "",
+    result: "",
+  });
+
+  const resultLabel = filters.result
+    ? filters.result.toUpperCase()
+    : "All results";
+
   return (
     <section className="inspections-page" aria-labelledby="inspections-title">
       <p className="inspections-page__notice">
@@ -19,11 +40,17 @@ function InspectionsPage() {
           restaurants.
         </p>
       </header>
+
+      <RestaurantSearch neighborhoods={NEIGHBORHOODS} onSearch={setFilters} />
+
+      <p className="inspections-page__summary" role="status">
+        Search criteria: {filters.name || "All names"} ·{" "}
+        {filters.neighborhood || "All neighborhoods"} · {resultLabel}
+      </p>
     </section>
   );
 }
 
-// Required by the course, including components without props.
 InspectionsPage.propTypes = {};
 
 export default InspectionsPage;

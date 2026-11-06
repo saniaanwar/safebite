@@ -36,3 +36,10 @@
   margin: 0;
   color: var(--sb-color-muted, #52616c);
 }
+
+.inspections-page__summary {
+  margin: 1rem 0 0;
+  color: var(--sb-color-muted, #52616c);
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
