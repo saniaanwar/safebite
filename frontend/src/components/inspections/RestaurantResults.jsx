@@ -9,7 +9,15 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   timeZone: "UTC",
 });
 
-function RestaurantResults({ restaurants }) {
+function RestaurantResults({ restaurants, total, page, pageSize }) {
+  const first = (page - 1) * pageSize + 1;
+  const last = first + restaurants.length - 1;
+  const noun = total === 1 ? "restaurant" : "restaurants";
+
+  const summary =
+    restaurants.length === 0
+      ? `${total} matching ${noun}`
+      : `Showing ${first}-${last} of ${total} ${noun}`;
   return (
     <section
       className="restaurant-results"
@@ -18,10 +26,7 @@ function RestaurantResults({ restaurants }) {
       <header className="restaurant-results__header">
         <h2 id="restaurant-results-title">Restaurants</h2>
 
-        <p role="status">
-          {restaurants.length} matching{" "}
-          {restaurants.length === 1 ? "restaurant" : "restaurants"}
-        </p>
+        <p role="status">{summary}</p>
       </header>
 
       {restaurants.length === 0 ? (
@@ -84,6 +89,9 @@ RestaurantResults.propTypes = {
       latestResult: PropTypes.oneOf(["pass", "fail"]).isRequired,
     }),
   ).isRequired,
+  total: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
 };
 
 export default RestaurantResults;
