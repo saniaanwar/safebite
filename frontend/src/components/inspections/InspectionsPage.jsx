@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import RestaurantSearch from "./RestaurantSearch";
 import RestaurantResults from "./RestaurantResults";
+import RestaurantDetails from "./RestaurantDetails";
 import { fetchRestaurants } from "./api";
 import "./InspectionsPage.css";
 
@@ -19,6 +20,9 @@ function InspectionsPage() {
     result: "",
     page: 1,
   });
+
+  const [selectedRestaurantId, setSelectedRestaurantId] = useState(null);
+  const openerRef = useRef(null);
 
   // Associate each response with the query that produced it.
   const [response, setResponse] = useState({
@@ -52,9 +56,16 @@ function InspectionsPage() {
 
     loadRestaurants();
 
-    // Cancel this request when the query changes or the page unmounts.
+    // Cancel when the query changes or the page unmounts.
     return () => controller.abort();
   }, [query]);
+
+  useEffect(() => {
+    // Restore focus after returning from the detail view.
+    if (selectedRestaurantId === null) {
+      openerRef.current?.focus();
+    }
+  }, [selectedRestaurantId]);
 
   function handleSearch(filters) {
     setQuery({ ...filters, page: 1 });
@@ -65,8 +76,16 @@ function InspectionsPage() {
   }
 
   function retry() {
-    // A new query object triggers another request with the same values.
     setQuery((current) => ({ ...current }));
+  }
+
+  function openDetails(restaurantId, button) {
+    openerRef.current = button;
+    setSelectedRestaurantId(restaurantId);
+  }
+
+  function closeDetails() {
+    setSelectedRestaurantId(null);
   }
 
   const resultLabel = query.result ? query.result.toUpperCase() : "All results";
@@ -89,64 +108,79 @@ function InspectionsPage() {
         </p>
       </header>
 
-      <RestaurantSearch neighborhoods={NEIGHBORHOODS} onSearch={handleSearch} />
-
-      <p className="inspections-page__summary">
-        Search criteria: {query.name || "All names"} ·{" "}
-        {query.neighborhood || "All neighborhoods"} · {resultLabel}
-      </p>
-
-      {loading && <p role="status">Loading restaurants...</p>}
-
-      {failed && (
-        <div className="inspections-page__error" role="alert">
-          <p>Could not load restaurants. Please try again.</p>
-          <button
-            className="inspections-page__retry"
-            type="button"
-            onClick={retry}
-          >
-            Try again
-          </button>
-        </div>
-      )}
-
-      {data && (
-        <RestaurantResults
-          restaurants={data.restaurants}
-          total={data.total}
-          page={data.page}
-          pageSize={data.pageSize}
+      {/* Keep search inputs mounted while viewing details. */}
+      <div hidden={selectedRestaurantId !== null}>
+        <RestaurantSearch
+          neighborhoods={NEIGHBORHOODS}
+          onSearch={handleSearch}
         />
-      )}
 
-      {lastData?.totalPages > 1 && (
-        <nav
-          className="inspections-page__pagination"
-          aria-label="Restaurant result pages"
-        >
-          <button
-            type="button"
-            disabled={loading || lastData.page <= 1}
-            onClick={() => goToPage(lastData.page - 1)}
+        <p className="inspections-page__summary">
+          Search criteria: {query.name || "All names"} ·{" "}
+          {query.neighborhood || "All neighborhoods"} · {resultLabel}
+        </p>
+
+        {loading && <p role="status">Loading restaurants...</p>}
+
+        {failed && (
+          <div className="inspections-page__error" role="alert">
+            <p>Could not load restaurants. Please try again.</p>
+            <button
+              className="inspections-page__retry"
+              type="button"
+              onClick={retry}
+            >
+              Try again
+            </button>
+          </div>
+        )}
+
+        {data && (
+          <RestaurantResults
+            restaurants={data.restaurants}
+            total={data.total}
+            page={data.page}
+            pageSize={data.pageSize}
+            onSelect={openDetails}
+          />
+        )}
+
+        {lastData?.totalPages > 1 && (
+          <nav
+            className="inspections-page__pagination"
+            aria-label="Restaurant result pages"
           >
-            Previous
-          </button>
+            <button
+              type="button"
+              disabled={loading || lastData.page <= 1}
+              onClick={() => goToPage(lastData.page - 1)}
+            >
+              Previous
+            </button>
 
-          <span>
-            {loading
-              ? "Loading results..."
-              : `Page ${lastData.page} of ${lastData.totalPages}`}
-          </span>
+            <span>
+              {loading
+                ? "Loading results..."
+                : `Page ${lastData.page} of ${lastData.totalPages}`}
+            </span>
 
-          <button
-            type="button"
-            disabled={loading || lastData.page >= lastData.totalPages}
-            onClick={() => goToPage(lastData.page + 1)}
-          >
-            Next
-          </button>
-        </nav>
+            <button
+              type="button"
+              disabled={loading || lastData.page >= lastData.totalPages}
+              onClick={() => goToPage(lastData.page + 1)}
+            >
+              Next
+            </button>
+          </nav>
+        )}
+      </div>
+
+      {selectedRestaurantId !== null && (
+        <RestaurantDetails
+          key={selectedRestaurantId}
+          restaurantId={selectedRestaurantId}
+          onBack={closeDetails}
+        />
       )}
     </section>
   );

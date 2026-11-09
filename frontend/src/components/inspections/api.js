@@ -18,3 +18,22 @@ export async function fetchRestaurants(query, signal) {
 
   return response.json();
 }
+
+export async function fetchRestaurantDetails(restaurantId, signal) {
+  const response = await fetch(
+    `/api/restaurants/${encodeURIComponent(restaurantId)}`,
+    { signal },
+  );
+
+  if (!response.ok) {
+    const error = new Error(
+      `Restaurant details request failed with HTTP ${response.status}.`,
+    );
+
+    // Let the component distinguish a missing restaurant from other errors.
+    error.status = response.status;
+    throw error;
+  }
+
+  return response.json();
+}

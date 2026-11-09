@@ -9,7 +9,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   timeZone: "UTC",
 });
 
-function RestaurantResults({ restaurants, total, page, pageSize }) {
+function RestaurantResults({ restaurants, total, page, pageSize, onSelect }) {
   const first = (page - 1) * pageSize + 1;
   const last = first + restaurants.length - 1;
   const noun = total === 1 ? "restaurant" : "restaurants";
@@ -18,6 +18,7 @@ function RestaurantResults({ restaurants, total, page, pageSize }) {
     restaurants.length === 0
       ? `${total} matching ${noun}`
       : `Showing ${first}-${last} of ${total} ${noun}`;
+
   return (
     <section
       className="restaurant-results"
@@ -25,7 +26,6 @@ function RestaurantResults({ restaurants, total, page, pageSize }) {
     >
       <header className="restaurant-results__header">
         <h2 id="restaurant-results-title">Restaurants</h2>
-
         <p role="status">{summary}</p>
       </header>
 
@@ -49,6 +49,7 @@ function RestaurantResults({ restaurants, total, page, pageSize }) {
                 <th scope="col">Neighborhood</th>
                 <th scope="col">Latest inspection</th>
                 <th scope="col">Result</th>
+                <th scope="col">Details</th>
               </tr>
             </thead>
 
@@ -68,6 +69,18 @@ function RestaurantResults({ restaurants, total, page, pageSize }) {
                     <span className="restaurant-results__result">
                       {restaurant.latestResult === "pass" ? "Pass" : "Fail"}
                     </span>
+                  </td>
+                  <td>
+                    <button
+                      className="restaurant-results__details"
+                      type="button"
+                      aria-label={`View details for ${restaurant.restaurantName}`}
+                      onClick={(event) =>
+                        onSelect(restaurant.restaurantId, event.currentTarget)
+                      }
+                    >
+                      View details
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -92,6 +105,7 @@ RestaurantResults.propTypes = {
   total: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
+  onSelect: PropTypes.func.isRequired,
 };
 
 export default RestaurantResults;
