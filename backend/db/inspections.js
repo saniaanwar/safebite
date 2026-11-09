@@ -87,3 +87,33 @@ export async function listRestaurants({
     totalPages: Math.ceil(total / pageSize),
   };
 }
+
+export async function getRestaurantDetails(restaurantId) {
+  const records = await db
+    .collection("inspections")
+    .find({ restaurantId, isSynthetic: true })
+    .sort({ inspectionDate: -1, _id: -1 })
+    .toArray();
+
+  if (records.length === 0) {
+    return null;
+  }
+
+  // Use the newest inspection for the restaurant's details.
+  const latest = records[0];
+
+  return {
+    restaurant: {
+      restaurantId: latest.restaurantId,
+      restaurantName: latest.restaurantName,
+      neighborhood: latest.neighborhood,
+      address: latest.address,
+      isSynthetic: latest.isSynthetic,
+    },
+    inspections: records.map(({ inspectionDate, result, violations }) => ({
+      inspectionDate,
+      result,
+      violations,
+    })),
+  };
+}

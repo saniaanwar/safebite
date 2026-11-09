@@ -1,5 +1,5 @@
 import express from "express";
-import { listRestaurants } from "../db/inspections.js";
+import { getRestaurantDetails, listRestaurants } from "../db/inspections.js";
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
     pageSize = "10",
   } = req.query;
 
-  // Reject repeated or non-text query values before processing them.
+  // Reject repeated or non-text query values.
   const values = [name, neighborhood, result, page, pageSize];
 
   if (values.some((value) => typeof value !== "string")) {
@@ -54,6 +54,27 @@ router.get("/", async (req, res) => {
     page: pageNumber,
     pageSize: pageSizeNumber,
   });
+
+  res.json(data);
+});
+
+router.get("/:restaurantId", async (req, res) => {
+  const { restaurantId } = req.params;
+
+  // Match the current synthetic restaurant ID format.
+  if (!/^demo-rest-\d{3}$/.test(restaurantId)) {
+    return res.status(400).json({
+      error: "Use a restaurant ID such as demo-rest-001.",
+    });
+  }
+
+  const data = await getRestaurantDetails(restaurantId);
+
+  if (!data) {
+    return res.status(404).json({
+      error: "Restaurant not found.",
+    });
+  }
 
   res.json(data);
 });
