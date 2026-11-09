@@ -45,7 +45,7 @@ function RestaurantSearch({ neighborhoods, onSearch }) {
           id="restaurant-search-name"
           name="name"
           type="search"
-          placeholder="e.g. Demo Restaurant 001"
+          placeholder="e.g. Clover Cafe"
           value={name}
           onChange={(event) => setName(event.target.value)}
         />
