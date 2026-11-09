@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import RestaurantSearch from "./RestaurantSearch";
 import RestaurantResults from "./RestaurantResults";
 import RestaurantDetails from "./RestaurantDetails";
+import InspectionsSnapshot from "./InspectionsSnapshot";
 import { fetchRestaurants } from "./api";
 import "./InspectionsPage.css";
 
@@ -35,6 +36,14 @@ function InspectionsPage() {
   const data = !loading && !failed ? response.data : null;
   const lastData = response.data;
 
+  // Reuse snapshot totals while paging within the same filters.
+  const snapshotMatchesQuery =
+    response.query?.name === query.name &&
+    response.query?.neighborhood === query.neighborhood &&
+    response.query?.result === query.result;
+
+  const snapshotData = snapshotMatchesQuery && !failed ? lastData : null;
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -59,7 +68,6 @@ function InspectionsPage() {
   }, [query]);
 
   useEffect(() => {
-    // Restore focus after returning from details.
     if (selectedRestaurantId === null) {
       openerRef.current?.focus();
     }
@@ -106,8 +114,15 @@ function InspectionsPage() {
         </p>
       </header>
 
-      {/* Preserve search inputs while viewing details. */}
+      {/* Preserve the search view while displaying details. */}
       <div hidden={selectedRestaurantId !== null}>
+        <InspectionsSnapshot
+          total={snapshotData?.total ?? 0}
+          summary={snapshotData?.summary ?? null}
+          loading={loading && !snapshotData}
+          error={failed}
+        />
+
         <RestaurantSearch
           neighborhoods={NEIGHBORHOODS}
           onSearch={handleSearch}
