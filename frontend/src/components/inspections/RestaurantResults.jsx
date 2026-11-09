@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import "./RestaurantResults.css";
 
-// Keep date-only records consistent across browser time zones.
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
   month: "short",
   day: "numeric",
@@ -9,15 +8,16 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   timeZone: "UTC",
 });
 
-function RestaurantResults({ restaurants, total, page, pageSize, onSelect }) {
-  const first = (page - 1) * pageSize + 1;
-  const last = first + restaurants.length - 1;
+function RestaurantResults({
+  restaurants,
+  total,
+  page,
+  totalPages,
+  loading,
+  onPageChange,
+  onSelect,
+}) {
   const noun = total === 1 ? "restaurant" : "restaurants";
-
-  const summary =
-    restaurants.length === 0
-      ? `${total} matching ${noun}`
-      : `Showing ${first}-${last} of ${total} ${noun}`;
 
   return (
     <section
@@ -25,11 +25,52 @@ function RestaurantResults({ restaurants, total, page, pageSize, onSelect }) {
       aria-labelledby="restaurant-results-title"
     >
       <header className="restaurant-results__header">
-        <h2 id="restaurant-results-title">Restaurants</h2>
-        <p role="status">{summary}</p>
+        <h2 id="restaurant-results-title">Restaurant Records</h2>
+
+        <p role="status">
+          {loading ? (
+            "Updating results..."
+          ) : (
+            <>
+              {total.toLocaleString("en-US")} matching {noun}
+              {totalPages > 0 && (
+                <span className="restaurant-results__sr-only">
+                  {`, page ${page} of ${totalPages}`}
+                </span>
+              )}
+            </>
+          )}
+        </p>
       </header>
 
-      {restaurants.length === 0 ? (
+      {totalPages > 0 && (
+        <nav
+          className="restaurant-results__pagination"
+          aria-label="Restaurant result pages"
+        >
+          <button
+            type="button"
+            disabled={loading || page <= 1}
+            onClick={() => onPageChange(page - 1)}
+          >
+            Previous
+          </button>
+
+          <p>{loading ? "Loading..." : `Page ${page} of ${totalPages}`}</p>
+
+          <button
+            type="button"
+            disabled={loading || page >= totalPages}
+            onClick={() => onPageChange(page + 1)}
+          >
+            Next
+          </button>
+        </nav>
+      )}
+
+      {loading ? (
+        <p>Loading restaurants...</p>
+      ) : restaurants.length === 0 ? (
         <p>
           No restaurants match these filters. Try another search or use Clear.
         </p>
@@ -104,7 +145,9 @@ RestaurantResults.propTypes = {
   ).isRequired,
   total: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
-  pageSize: PropTypes.number.isRequired,
+  totalPages: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired,
+  onPageChange: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
 };
 

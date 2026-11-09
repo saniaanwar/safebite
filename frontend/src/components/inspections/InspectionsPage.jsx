@@ -24,7 +24,6 @@ function InspectionsPage() {
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(null);
   const openerRef = useRef(null);
 
-  // Associate each response with the query that produced it.
   const [response, setResponse] = useState({
     query: null,
     data: null,
@@ -56,12 +55,11 @@ function InspectionsPage() {
 
     loadRestaurants();
 
-    // Cancel when the query changes or the page unmounts.
     return () => controller.abort();
   }, [query]);
 
   useEffect(() => {
-    // Restore focus after returning from the detail view.
+    // Restore focus after returning from details.
     if (selectedRestaurantId === null) {
       openerRef.current?.focus();
     }
@@ -108,7 +106,7 @@ function InspectionsPage() {
         </p>
       </header>
 
-      {/* Keep search inputs mounted while viewing details. */}
+      {/* Preserve search inputs while viewing details. */}
       <div hidden={selectedRestaurantId !== null}>
         <RestaurantSearch
           neighborhoods={NEIGHBORHOODS}
@@ -120,11 +118,12 @@ function InspectionsPage() {
           {query.neighborhood || "All neighborhoods"} · {resultLabel}
         </p>
 
-        {loading && <p role="status">Loading restaurants...</p>}
+        {loading && !lastData && <p role="status">Loading restaurants...</p>}
 
         {failed && (
           <div className="inspections-page__error" role="alert">
             <p>Could not load restaurants. Please try again.</p>
+
             <button
               className="inspections-page__retry"
               type="button"
@@ -135,43 +134,16 @@ function InspectionsPage() {
           </div>
         )}
 
-        {data && (
+        {lastData && !failed && (
           <RestaurantResults
-            restaurants={data.restaurants}
-            total={data.total}
-            page={data.page}
-            pageSize={data.pageSize}
+            restaurants={data?.restaurants ?? []}
+            total={lastData.total}
+            page={lastData.page}
+            totalPages={lastData.totalPages}
+            loading={loading}
+            onPageChange={goToPage}
             onSelect={openDetails}
           />
-        )}
-
-        {lastData?.totalPages > 1 && (
-          <nav
-            className="inspections-page__pagination"
-            aria-label="Restaurant result pages"
-          >
-            <button
-              type="button"
-              disabled={loading || lastData.page <= 1}
-              onClick={() => goToPage(lastData.page - 1)}
-            >
-              Previous
-            </button>
-
-            <span>
-              {loading
-                ? "Loading results..."
-                : `Page ${lastData.page} of ${lastData.totalPages}`}
-            </span>
-
-            <button
-              type="button"
-              disabled={loading || lastData.page >= lastData.totalPages}
-              onClick={() => goToPage(lastData.page + 1)}
-            >
-              Next
-            </button>
-          </nav>
         )}
       </div>
 
