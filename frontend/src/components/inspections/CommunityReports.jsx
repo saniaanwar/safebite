@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { createReport, fetchReports, updateReport } from "./api";
+import { createReport, deleteReport, fetchReports, updateReport } from "./api";
 import ReportForm from "./ReportForm";
 import "./CommunityReports.css";
 
@@ -19,11 +19,16 @@ function CommunityReports({ restaurantId }) {
     error: null,
   });
   const [editor, setEditor] = useState(null);
-  const [isSaving, setIsSaving] = useState(false);
+  const [deletion, setDeletion] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
+  const [isMutating, setIsMutating] = useState(false);
   const [notice, setNotice] = useState("");
 
   const headingRef = useRef(null);
-  const savingRef = useRef(false);
+  const mutationRef = useRef(false);
+  const deleteTriggerRef = useRef(null);
+  const cancelDeleteRef = useRef(null);
+  const deleteErrorRef = useRef(null);
 
   const requestKey = `${restaurantId}:${attempt}`;
   const loading = response.key !== requestKey;
@@ -32,9 +37,13 @@ function CommunityReports({ restaurantId }) {
 
   const activeEditor = editor?.restaurantId === restaurantId ? editor : null;
 
+  const activeDeletion =
+    deletion?.restaurantId === restaurantId ? deletion : null;
+
   const reportCount = data?.reports.length ?? 0;
   const canWrite = Boolean(data?.currentUserId);
-  const controlsDisabled = isSaving || Boolean(activeEditor);
+  const controlsDisabled =
+    isMutating || Boolean(activeEditor) || Boolean(activeDeletion);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -58,9 +67,35 @@ function CommunityReports({ restaurantId }) {
     return () => controller.abort();
   }, [restaurantId, requestKey]);
 
+  useEffect(() => {
+    if (activeDeletion) {
+      if (!isMutating) {
+        if (deleteError) {
+          deleteErrorRef.current?.focus();
+        } else {
+          cancelDeleteRef.current?.focus();
+        }
+      }
+
+      return;
+    }
+
+    // Restore the trigger after cancellation, or the heading after deletion.
+    const trigger = deleteTriggerRef.current;
+
+    if (trigger) {
+      if (trigger.isConnected) {
+        trigger.focus();
+      } else {
+        headingRef.current?.focus();
+      }
+
+      deleteTriggerRef.current = null;
+    }
+  }, [activeDeletion, isMutating, deleteError]);
+
   function handleRefresh() {
-    // Keep an open draft intact until it is saved or canceled.
-    if (savingRef.current || activeEditor) {
+    if (mutationRef.current || activeEditor || activeDeletion) {
       return;
     }
 
@@ -70,7 +105,7 @@ function CommunityReports({ restaurantId }) {
   }
 
   function handleOpenEditor(report = null) {
-    if (!canWrite || savingRef.current || activeEditor) {
+    if (!canWrite || mutationRef.current || activeEditor || activeDeletion) {
       return;
     }
 
@@ -83,7 +118,7 @@ function CommunityReports({ restaurantId }) {
   }
 
   function handleCancelEditor() {
-    if (savingRef.current) {
+    if (mutationRef.current) {
       return;
     }
 
@@ -96,14 +131,14 @@ function CommunityReports({ restaurantId }) {
       throw new Error("Sign in to save a community report.");
     }
 
-    if (savingRef.current) {
-      throw new Error("A report is already being saved.");
+    if (mutationRef.current) {
+      throw new Error("Another report action is already running.");
     }
 
     const reportToEdit = activeEditor.report;
 
-    savingRef.current = true;
-    setIsSaving(true);
+    mutationRef.current = true;
+    setIsMutating(true);
 
     try {
       const { report: savedReport } = reportToEdit
@@ -139,9 +174,86 @@ function CommunityReports({ restaurantId }) {
       );
       headingRef.current?.focus();
     } finally {
-      // Errors reach ReportForm, which displays them and preserves input.
-      savingRef.current = false;
-      setIsSaving(false);
+      // Save errors reach ReportForm without discarding its inputs.
+      mutationRef.current = false;
+      setIsMutating(false);
+    }
+  }
+
+  function handleRequestDelete(report, trigger) {
+    if (
+      !canWrite ||
+      mutationRef.current ||
+      activeEditor ||
+      activeDeletion ||
+      report.authorId !== data.currentUserId
+    ) {
+      return;
+    }
+
+    deleteTriggerRef.current = trigger;
+    setNotice("");
+    setDeleteError("");
+    setDeletion({ restaurantId, reportId: report._id });
+  }
+
+  function handleCancelDelete() {
+    if (mutationRef.current) {
+      return;
+    }
+
+    setDeleteError("");
+    setDeletion(null);
+  }
+
+  async function handleConfirmDelete() {
+    if (!activeDeletion || !canWrite || mutationRef.current) {
+      return;
+    }
+
+    const { reportId } = activeDeletion;
+
+    mutationRef.current = true;
+    setIsMutating(true);
+    setDeleteError("");
+
+    try {
+      await deleteReport(reportId);
+
+      // Remove the card only after the DELETE request succeeds.
+      setResponse((current) => {
+        if (current.key !== requestKey || !current.data) {
+          return current;
+        }
+
+        return {
+          ...current,
+          data: {
+            ...current.data,
+            reports: current.data.reports.filter(
+              (report) => report._id !== reportId,
+            ),
+          },
+        };
+      });
+
+      setDeletion(null);
+      setNotice("Your report was deleted.");
+    } catch (error) {
+      if (error.status === 401) {
+        setDeleteError("Sign in again to delete this report.");
+      } else if (error.status === 404) {
+        setDeleteError(
+          "This report is no longer available. Cancel and refresh the reports.",
+        );
+      } else {
+        setDeleteError(
+          "Could not confirm deletion. Try again, or cancel and refresh the reports.",
+        );
+      }
+    } finally {
+      mutationRef.current = false;
+      setIsMutating(false);
     }
   }
 
@@ -263,16 +375,85 @@ function CommunityReports({ restaurantId }) {
                   </p>
 
                   {canWrite && report.authorId === data.currentUserId && (
-                    <div className="community-reports__report-actions">
-                      <button
-                        className="community-reports__button"
-                        type="button"
-                        disabled={controlsDisabled}
-                        onClick={() => handleOpenEditor(report)}
-                      >
-                        Edit report
-                      </button>
-                    </div>
+                    <>
+                      <div className="community-reports__report-actions">
+                        <button
+                          className="community-reports__button"
+                          type="button"
+                          disabled={controlsDisabled}
+                          onClick={() => handleOpenEditor(report)}
+                        >
+                          Edit report
+                        </button>
+
+                        <button
+                          className="community-reports__button"
+                          type="button"
+                          disabled={controlsDisabled}
+                          aria-expanded={
+                            activeDeletion?.reportId === report._id
+                          }
+                          onClick={(event) =>
+                            handleRequestDelete(report, event.currentTarget)
+                          }
+                        >
+                          Delete report
+                        </button>
+                      </div>
+
+                      {activeDeletion?.reportId === report._id && (
+                        <div
+                          className="community-reports__delete-confirmation"
+                          role="group"
+                          aria-labelledby={`delete-title-${report._id}`}
+                          aria-describedby={`delete-help-${report._id}`}
+                        >
+                          <p id={`delete-title-${report._id}`}>
+                            <strong>Delete this report?</strong>
+                          </p>
+
+                          <p id={`delete-help-${report._id}`}>
+                            This permanently removes your observation.
+                          </p>
+
+                          {deleteError && (
+                            <p
+                              className="community-reports__delete-error"
+                              ref={deleteErrorRef}
+                              role="alert"
+                              tabIndex={-1}
+                            >
+                              {deleteError}
+                            </p>
+                          )}
+
+                          <div className="community-reports__report-actions">
+                            <button
+                              className="community-reports__button"
+                              ref={cancelDeleteRef}
+                              type="button"
+                              disabled={isMutating}
+                              onClick={handleCancelDelete}
+                            >
+                              Cancel
+                            </button>
+
+                            <button
+                              className="community-reports__button community-reports__button--danger"
+                              type="button"
+                              disabled={isMutating}
+                              onClick={handleConfirmDelete}
+                            >
+                              {isMutating ? "Deleting…" : "Confirm delete"}
+                            </button>
+                          </div>
+
+                          {isMutating && (
+                            <p role="status">Deleting your report…</p>
+                          )}
+                        </div>
+                      )}
+                    </>
                   )}
                 </li>
               ))}

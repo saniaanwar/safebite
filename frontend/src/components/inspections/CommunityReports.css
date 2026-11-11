@@ -98,3 +98,30 @@
   color: var(--sb-color-muted, #53636f);
   cursor: not-allowed;
 }
+
+.community-reports__delete-confirmation {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #b35927;
+  border-radius: 0.5rem;
+  background: #fff6ef;
+}
+
+.community-reports__delete-confirmation > p:first-child {
+  margin-top: 0;
+}
+
+.community-reports__delete-error {
+  color: #8a3d16;
+}
+
+.community-reports__delete-error:focus {
+  outline: 3px solid var(--sb-color-accent, #315d69);
+  outline-offset: 3px;
+}
+
+.community-reports .community-reports__button--danger:not(:disabled) {
+  border-color: #8a3d16;
+  background: #8a3d16;
+  color: #fff;
+}
