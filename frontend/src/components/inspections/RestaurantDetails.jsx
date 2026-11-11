@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { fetchRestaurantDetails } from "./api";
+import CommunityReports from "./CommunityReports";
 import "./RestaurantDetails.css";
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
@@ -132,6 +133,8 @@ function RestaurantDetails({ restaurantId, onBack }) {
               </li>
             ))}
           </ol>
+
+          <CommunityReports restaurantId={restaurantId} />
         </>
       )}
     </section>
