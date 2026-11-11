@@ -1,0 +1,25 @@
+.grocery-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.grocery-cta-button {
+  padding: 0.7rem 1.4rem;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  background: var(--orange);
+  border-radius: 999px;
+}
+
+.grocery-cta-button:hover {
+  background: #cf6f2a;
+}
+
+.grocery-cta p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
