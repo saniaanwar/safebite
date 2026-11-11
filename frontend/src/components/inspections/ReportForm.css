@@ -1,0 +1,118 @@
+.report-form {
+  margin-block: 1.5rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--sb-color-border, #dce5ec);
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+.report-form__fields {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.report-form__fields legend {
+  padding: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.report-form__field {
+  display: grid;
+  gap: 0.5rem;
+  margin-block-start: 1.25rem;
+}
+
+.report-form__field label {
+  font-weight: 700;
+}
+
+.report-form__field input,
+.report-form__field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--sb-color-border, #b8c7d1);
+  border-radius: 0.4rem;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+}
+
+.report-form__field input[type="date"] {
+  max-width: 17rem;
+}
+
+.report-form__field textarea {
+  resize: vertical;
+}
+
+.report-form__field [aria-invalid="true"] {
+  border-color: #a4481e;
+}
+
+.report-form__help,
+.report-form__count {
+  margin-block: 0.5rem 0;
+  color: var(--sb-color-muted, #526471);
+  font-size: 0.95rem;
+}
+
+.report-form__count {
+  text-align: right;
+}
+
+.report-form__error {
+  margin: 0;
+  color: #8a3d16;
+}
+
+.report-form__error-summary {
+  margin-block: 0 1rem;
+  padding: 0.875rem;
+  border: 1px solid #b45a2a;
+  border-radius: 0.4rem;
+  color: #8a3d16;
+  background: #fff6ef;
+}
+
+.report-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block-start: 1.25rem;
+}
+
+.report-form .report-form__button {
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--sb-color-accent, #315f6c);
+  border-radius: 0.4rem;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.report-form .report-form__button--primary {
+  background: var(--sb-color-accent, #315f6c);
+  color: #fff;
+}
+
+.report-form :is(input, textarea, button):focus-visible,
+.report-form__error-summary:focus {
+  outline: 3px solid var(--sb-color-accent, #315f6c);
+  outline-offset: 3px;
+}
+
+.report-form__fields:disabled {
+  opacity: 0.7;
+}
+
+.report-form__fields:disabled button {
+  cursor: wait;
+}

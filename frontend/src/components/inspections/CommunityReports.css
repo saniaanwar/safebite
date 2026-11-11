@@ -84,3 +84,17 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+.community-reports__report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.community-reports .community-reports__button:disabled {
+  border-color: var(--sb-color-border, #dce5ed);
+  background: var(--sb-color-surface, #eef3f4);
+  color: var(--sb-color-muted, #53636f);
+  cursor: not-allowed;
+}
