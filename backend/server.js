@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import "dotenv/config";
 import { client } from "./db/connection.js";
 import restaurantsRouter from "./routes/restaurants.js";
+import reportsRouter from "./routes/reports.js";
 
 const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -15,7 +16,9 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "Backend works" });
 });
 
+// Mount shared session and Passport middleware before these routers.
 app.use("/api/restaurants", restaurantsRouter);
+app.use("/api", reportsRouter);
 
 // Register additional API routers above this fallback.
 app.use("/api", (req, res) => {
@@ -34,10 +37,25 @@ app.use((error, req, res, next) => {
     return next(error);
   }
 
-  console.error("Request failed:", error.message);
-  res.status(500).json({
-    error: "Could not complete the request.",
-  });
+  const errorStatus = error.status ?? error.statusCode;
+  const status =
+    Number.isInteger(errorStatus) && errorStatus >= 400 && errorStatus <= 599
+      ? errorStatus
+      : 500;
+
+  if (status >= 500) {
+    console.error("Request failed:", error.message);
+  }
+
+  let message = "Could not complete the request.";
+
+  if (status === 400) {
+    message = "Invalid request.";
+  } else if (status === 413) {
+    message = "Request body is too large.";
+  }
+
+  res.status(status).json({ error: message });
 });
 
 const PORT = process.env.PORT || 3000;
