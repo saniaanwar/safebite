@@ -1,5 +1,4 @@
-import "dotenv/config";
-import { MongoClient } from "mongodb";
+import { client, db } from "../db/connection.js";
 
 const NUM_RECALLS = 50;
 
@@ -169,10 +168,9 @@ function buildRecall(index) {
 
 // run
 async function seed() {
-  const client = new MongoClient(process.env.MONGO_URI);
   try {
     await client.connect();
-    const recalls = client.db(process.env.DB_NAME || "safebite").collection("recalls");
+    const recalls = db.collection("recalls");
 
     await recalls.deleteMany({});
     const docs = Array.from({ length: NUM_RECALLS }, (_, i) => buildRecall(i));
