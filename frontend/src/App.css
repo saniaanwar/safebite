@@ -1,0 +1,27 @@
+.site-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.site-shell__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.site-shell__skip-link {
+  position: absolute;
+  z-index: 100;
+  top: 0.75rem;
+  left: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--green);
+  color: white;
+  font-weight: 700;
+  transform: translateY(-200%);
+}
+
+.site-shell__skip-link:focus {
+  transform: translateY(0);
+}

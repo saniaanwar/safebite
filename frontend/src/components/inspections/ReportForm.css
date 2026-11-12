@@ -2,7 +2,7 @@
   margin-block: 1.5rem;
   padding: clamp(1rem, 3vw, 1.5rem);
   border: 1px solid var(--sb-color-border, #dce5ec);
-  border-radius: 0.75rem;
+  border-radius: var(--sb-card-radius, 1rem);
   background: #fff;
 }
 
@@ -15,6 +15,7 @@
 
 .report-form__fields legend {
   padding: 0;
+  font-family: var(--sb-font-heading, "Fredoka", "Nunito", sans-serif);
   font-size: 1.2rem;
   font-weight: 700;
 }
@@ -35,8 +36,8 @@
   width: 100%;
   min-width: 0;
   padding: 0.75rem;
-  border: 1px solid var(--sb-color-border, #b8c7d1);
-  border-radius: 0.4rem;
+  border: 1px solid var(--sb-color-control-border, #8d7b68);
+  border-radius: 0.75rem;
   background: #fff;
   color: inherit;
   font: inherit;
@@ -44,6 +45,7 @@
 
 .report-form__field input[type="date"] {
   max-width: 17rem;
+  border-radius: var(--sb-control-radius, 999px);
 }
 
 .report-form__field textarea {
@@ -74,7 +76,7 @@
   margin-block: 0 1rem;
   padding: 0.875rem;
   border: 1px solid #b45a2a;
-  border-radius: 0.4rem;
+  border-radius: 0.75rem;
   color: #8a3d16;
   background: #fff6ef;
 }
@@ -90,7 +92,7 @@
   min-height: 2.75rem;
   padding: 0.65rem 1rem;
   border: 1px solid var(--sb-color-accent, #315f6c);
-  border-radius: 0.4rem;
+  border-radius: var(--sb-control-radius, 999px);
   background: #fff;
   color: inherit;
   font: inherit;
@@ -115,4 +117,17 @@
 
 .report-form__fields:disabled button {
   cursor: wait;
+}
+
+.report-form__field textarea::placeholder {
+  color: var(--sb-color-muted, #6b5f56);
+  opacity: 1;
+}
+
+.report-form .report-form__button:not(:disabled):hover {
+  background: var(--sb-color-surface, #fdf6e9);
+}
+
+.report-form .report-form__button--primary:not(:disabled):hover {
+  background: var(--sb-color-accent-hover, #245536);
 }

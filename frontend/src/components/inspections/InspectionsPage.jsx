@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import PageBanner from "../PageBanner.jsx";
 import RestaurantSearch from "./RestaurantSearch";
 import RestaurantResults from "./RestaurantResults";
 import RestaurantDetails from "./RestaurantDetails";
@@ -97,79 +98,70 @@ function InspectionsPage() {
   const resultLabel = query.result ? query.result.toUpperCase() : "All results";
 
   return (
-    <section className="inspections-page" aria-labelledby="inspections-title">
-      <p className="inspections-page__notice">
-        <strong>Demonstration data:</strong> All restaurant and inspection
-        records in this demo are synthetic.
-      </p>
+    <div className="inspections-workspace">
+      <PageBanner
+        title="RESTAURANT INSPECTIONS"
+        image="/restaurant-banner.jpg"
+        position="center 65%"
+      />
+      <section className="inspections-page" aria-label="Restaurant workspace">
+        {/* Preserve the search view while displaying details. */}
+        <div hidden={selectedRestaurantId !== null}>
+          <InspectionsSnapshot
+            total={snapshotData?.total ?? 0}
+            summary={snapshotData?.summary ?? null}
+            loading={loading && !snapshotData}
+            error={failed}
+          />
 
-      <header className="inspections-page__heading">
-        <p className="inspections-page__eyebrow">Boston restaurant workspace</p>
+          <RestaurantSearch
+            neighborhoods={NEIGHBORHOODS}
+            onSearch={handleSearch}
+          />
 
-        <h1 id="inspections-title">Restaurant inspections</h1>
+          <p className="inspections-page__summary">
+            Search criteria: {query.name || "All names"} ·{" "}
+            {query.neighborhood || "All neighborhoods"} · {resultLabel}
+          </p>
 
-        <p className="inspections-page__intro">
-          Explore inspection history and community reports for fictional
-          restaurants.
-        </p>
-      </header>
+          {loading && !lastData && <p role="status">Loading restaurants...</p>}
 
-      {/* Preserve the search view while displaying details. */}
-      <div hidden={selectedRestaurantId !== null}>
-        <InspectionsSnapshot
-          total={snapshotData?.total ?? 0}
-          summary={snapshotData?.summary ?? null}
-          loading={loading && !snapshotData}
-          error={failed}
-        />
+          {failed && (
+            <div className="inspections-page__error" role="alert">
+              <p>Could not load restaurants. Please try again.</p>
 
-        <RestaurantSearch
-          neighborhoods={NEIGHBORHOODS}
-          onSearch={handleSearch}
-        />
+              <button
+                className="inspections-page__retry"
+                type="button"
+                onClick={retry}
+              >
+                Try again
+              </button>
+            </div>
+          )}
 
-        <p className="inspections-page__summary">
-          Search criteria: {query.name || "All names"} ·{" "}
-          {query.neighborhood || "All neighborhoods"} · {resultLabel}
-        </p>
+          {lastData && !failed && (
+            <RestaurantResults
+              restaurants={data?.restaurants ?? []}
+              total={lastData.total}
+              page={lastData.page}
+              totalPages={lastData.totalPages}
+              loading={loading}
+              onPageChange={goToPage}
+              onSelect={openDetails}
+            />
+          )}
+        </div>
 
-        {loading && !lastData && <p role="status">Loading restaurants...</p>}
-
-        {failed && (
-          <div className="inspections-page__error" role="alert">
-            <p>Could not load restaurants. Please try again.</p>
-
-            <button
-              className="inspections-page__retry"
-              type="button"
-              onClick={retry}
-            >
-              Try again
-            </button>
-          </div>
-        )}
-
-        {lastData && !failed && (
-          <RestaurantResults
-            restaurants={data?.restaurants ?? []}
-            total={lastData.total}
-            page={lastData.page}
-            totalPages={lastData.totalPages}
-            loading={loading}
-            onPageChange={goToPage}
-            onSelect={openDetails}
+        {selectedRestaurantId !== null && (
+          <RestaurantDetails
+            key={selectedRestaurantId}
+            restaurantId={selectedRestaurantId}
+            onBack={closeDetails}
           />
         )}
-      </div>
-
-      {selectedRestaurantId !== null && (
-        <RestaurantDetails
-          key={selectedRestaurantId}
-          restaurantId={selectedRestaurantId}
-          onBack={closeDetails}
-        />
-      )}
-    </section>
+      </section>
+    </div>
   );
 }
 

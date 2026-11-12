@@ -6,7 +6,7 @@
   min-height: 2.75rem;
   padding: 0.5rem 1rem;
   border: 1px solid var(--sb-color-accent, #315d69);
-  border-radius: 0.375rem;
+  border-radius: var(--sb-control-radius, 999px);
   background: #fff;
   color: inherit;
   font: inherit;
@@ -31,7 +31,8 @@
 .restaurant-details__error {
   padding: 1rem;
   border: 1px solid var(--sb-color-border, #b9c3ca);
-  border-radius: 0.5rem;
+  border-radius: var(--sb-card-radius, 1rem);
+  background: var(--sb-color-background, #fff);
   overflow-wrap: anywhere;
 }
 

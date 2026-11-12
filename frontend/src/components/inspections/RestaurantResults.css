@@ -50,7 +50,7 @@
   min-height: 2.75rem;
   padding: 0.625rem 1rem;
   border: 1px solid var(--sb-color-accent, #315d69);
-  border-radius: 0.5rem;
+  border-radius: var(--sb-control-radius, 999px);
   background: var(--sb-color-background, #fff);
   color: inherit;
   font: inherit;
@@ -166,4 +166,19 @@
     grid-column: 2;
     grid-row: 2;
   }
+}
+
+.restaurant-results__result--pass {
+  background: var(--sb-color-pass-surface, #e3f0e7);
+  color: var(--sb-color-pass, #2f6b45);
+}
+
+.restaurant-results__result--fail {
+  background: var(--sb-color-fail-surface, #fdebd6);
+  color: var(--sb-color-fail, #a64b1f);
+}
+
+.restaurant-results__pagination button:not(:disabled):hover,
+.restaurant-results__details:hover {
+  background: var(--sb-color-surface, #fdf6e9);
 }

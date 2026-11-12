@@ -107,7 +107,9 @@ function RestaurantResults({
                     </time>
                   </td>
                   <td>
-                    <span className="restaurant-results__result">
+                    <span
+                      className={`restaurant-results__result restaurant-results__result--${restaurant.latestResult}`}
+                    >
                       {restaurant.latestResult === "pass" ? "Pass" : "Fail"}
                     </span>
                   </td>

@@ -1,0 +1,10 @@
+Restaurant banner photo
+
+Photographer: Glenov Brankovic
+Title: A room with tables and chairs
+Source: https://unsplash.com/photos/a-room-with-tables-and-chairs-e4B5AvA7Jqo
+License: Unsplash License, https://unsplash.com/license
+Downloaded: 2026-11-12
+Asset: restaurant-banner.jpg
+
+This photograph is licensed separately from the application's MIT-licensed code.

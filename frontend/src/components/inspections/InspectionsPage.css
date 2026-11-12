@@ -1,45 +1,60 @@
-/* Shared theme variables can override these provisional defaults. */
-.inspections-page {
-  box-sizing: border-box;
-  width: 100%;
-  max-width: var(--sb-content-width, 72rem);
-  margin: 0 auto;
-  padding: var(--sb-page-padding, 2rem 1rem);
-  color: var(--sb-color-text, #223746);
-  font-family: var(--sb-font-family, system-ui, sans-serif);
+/* Map the restaurant workspace to Sania's shared SafeBite theme. */
+.inspections-workspace {
+  --sb-color-text: var(--ink, #2b2420);
+  --sb-color-muted: var(--muted, #6b5f56);
+  --sb-color-accent: var(--green, #2f6b45);
+  --sb-color-accent-hover: #245536;
+  --sb-color-border: #eadfcf;
+  --sb-color-control-border: #8d7b68;
+  --sb-color-surface: var(--cream, #fdf6e9);
+  --sb-color-background: #fff;
+  --sb-color-pass: var(--green, #2f6b45);
+  --sb-color-pass-surface: #e3f0e7;
+  --sb-color-fail: #a64b1f;
+  --sb-color-fail-surface: #fdebd6;
+  --sb-font-family: "Nunito", system-ui, sans-serif;
+  --sb-font-heading: "Fredoka", "Nunito", sans-serif;
+  --sb-content-width: 76rem;
+  --sb-control-radius: 999px;
+  --sb-card-radius: 1rem;
+
+  background: var(--sb-color-surface);
+  color: var(--sb-color-text);
+  font-family: var(--sb-font-family);
   line-height: 1.6;
 }
 
-.inspections-page__notice {
-  margin: 0 0 2rem;
-  padding: 1rem;
-  border: 1px solid var(--sb-color-border, #b9c3ca);
-  border-radius: 0.5rem;
-  background: var(--sb-color-surface, #eef3f4);
+/* Keep the shared banner compact so the data stays prominent. */
+.inspections-workspace .page-banner {
+  min-height: clamp(12rem, 30vh, 20rem);
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)),
+    var(--banner-image) var(--banner-position) / cover no-repeat;
 }
 
-.inspections-page__eyebrow {
-  margin: 0;
-  color: var(--sb-color-muted, #52616c);
-  font-size: 0.875rem;
-  font-weight: 600;
+.inspections-workspace .page-banner h1 {
+  max-width: 20ch;
+  font-size: clamp(1.75rem, 6vw, 5rem);
+  line-height: 1.15;
 }
 
-.inspections-page__heading h1 {
-  margin: 0.25rem 0 0.75rem;
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  line-height: 1.2;
+.inspections-workspace
+  :is(button, input, select, textarea, a, [tabindex]):focus-visible {
+  outline: 3px solid var(--sb-color-accent);
+  outline-offset: 3px;
 }
 
-.inspections-page__intro {
-  max-width: 60ch;
-  margin: 0;
-  color: var(--sb-color-muted, #52616c);
+.inspections-page {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--sb-content-width);
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 4vw, 3rem) 4rem;
 }
 
 .inspections-page__summary {
   margin: 1rem 0 0;
-  color: var(--sb-color-muted, #52616c);
+  color: var(--sb-color-muted);
   font-size: 0.875rem;
   overflow-wrap: anywhere;
 }
@@ -47,34 +62,23 @@
 .inspections-page__error {
   margin-top: 1rem;
   padding: 1rem;
-  border: 1px solid var(--sb-color-border, #b9c3ca);
-  border-radius: 0.5rem;
+  border: 1px solid var(--sb-color-border);
+  border-radius: var(--sb-card-radius);
+  background: var(--sb-color-background);
 }
 
 .inspections-page__retry {
   min-height: 2.75rem;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--sb-color-accent, #315d69);
-  border-radius: 0.375rem;
-  background: #fff;
+  border: 1px solid var(--sb-color-accent);
+  border-radius: var(--sb-control-radius);
+  background: var(--sb-color-background);
   color: inherit;
   font: inherit;
+  font-weight: 700;
   cursor: pointer;
 }
 
-.inspections-page__retry,
-.inspections-page__pagination button {
-  min-height: 2.75rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--sb-color-accent, #315d69);
-  border-radius: 0.375rem;
-  background: #fff;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-}
-
-.inspections-page__pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.inspections-page__retry:hover {
+  background: var(--sb-color-surface);
 }

@@ -2,7 +2,7 @@
   margin-top: 2rem;
   padding: clamp(1rem, 2vw, 1.5rem);
   border: 1px solid var(--sb-color-border, #dce5ed);
-  border-radius: 0.875rem;
+  border-radius: var(--sb-card-radius, 1rem);
   background: #fff;
 }
 
@@ -47,7 +47,7 @@
   min-height: 2.75rem;
   padding: 0.5rem 1rem;
   border: 1px solid var(--sb-color-accent, #315d69);
-  border-radius: 0.375rem;
+  border-radius: var(--sb-control-radius, 999px);
   background: #fff;
   color: inherit;
   font: inherit;
@@ -124,4 +124,12 @@
   border-color: #8a3d16;
   background: #8a3d16;
   color: #fff;
+}
+
+.community-reports .community-reports__button:not(:disabled):hover {
+  background: var(--sb-color-surface, #fdf6e9);
+}
+
+.community-reports .community-reports__button--danger:not(:disabled):hover {
+  background: #6f2f10;
 }

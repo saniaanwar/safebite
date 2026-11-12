@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@400;600;700&family=Sekuya&display=swap");
+
+:root {
+  --cream: #fdf6e9;
+  --ink: #2b2420;
+  --muted: #6b5f56;
+  --green: #2f6b45;
+  --orange: #e8833a;
+
+  font-family: "Nunito", system-ui, sans-serif;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--cream);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Fredoka", "Nunito", sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+}
