@@ -1,0 +1,89 @@
+.recall-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.25rem;
+  text-align: center;
+  background: white;
+  border: 1px solid #eadfcf;
+  border-radius: 16px;
+}
+
+.recall-card-category {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.recall-card h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.recall-card-brand {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.recall-card-badges {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.recall-badge {
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 999px;
+}
+
+.recall-badge-class1 { color: #8f1d17; background: #fbe4e2; }
+.recall-badge-class2 { color: #8a4a0c; background: #fdebd6; }
+.recall-badge-class3 { color: #4f4a44; background: #ece8e2; }
+.recall-badge-status { color: var(--green); background: #e3f0e7; }
+
+.recall-card-reason {
+  margin: 0;
+  font-weight: 600;
+}
+
+.recall-card-allergens {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recall-card-allergens li {
+  padding: 0.15rem 0.55rem;
+  font-size: 0.8rem;
+  border: 1px solid #d9cfc1;
+  border-radius: 999px;
+}
+
+.recall-card-meta {
+  display: grid;
+  gap: 0.5rem;
+  margin: auto 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f0e8dc;
+  font-size: 0.85rem;
+}
+
+.recall-card-meta dt {
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.recall-card-meta dd {
+  margin: 0;
+}

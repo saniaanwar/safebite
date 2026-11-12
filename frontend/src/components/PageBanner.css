@@ -6,7 +6,7 @@
   padding: 2rem;
   background:
     linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)),
-    var(--banner-image) center / cover no-repeat;
+    var(--banner-image) var(--banner-position) / cover no-repeat;
 }
 
 .page-banner h1 {

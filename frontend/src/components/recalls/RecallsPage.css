@@ -1,0 +1,42 @@
+.recalls-content {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 2.5rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+.recalls-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin: 2.5rem 0 2rem;
+}
+
+.recalls-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.recalls-message {
+  padding: 3rem 0;
+  text-align: center;
+  color: var(--muted);
+}
+
+@media (max-width: 1000px) {
+  .recalls-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .recalls-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grocery-cta {
+    align-items: flex-start;
+  }
+}
