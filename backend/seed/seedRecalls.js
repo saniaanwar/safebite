@@ -1,10 +1,10 @@
 import { client, db } from "../db/connection.js";
 
-const NUM_RECALLS = 50;
+const NUM_RECALLS = 10;
 
 const CATALOG = {
   Produce: {
-    products: ["Baby Spinach", "Romaine Lettuce", "Oranges", "Cilantro", "Yellow Onions", "Red Onions", "Salad Mix", "Sliced Apples", "Pomegranate", "Tomato", "Peppers", "Ginger", "Garlic", "Carrots", "Cucumbers", "Celery", "Broccoli", "Mushrooms", "Watermelon", "Peaches", "Kale"],
+    products: ["Baby Spinach", "Romaine Lettuce", "Oranges", "Cilantro", "Yellow Onions", "Red Onions", "Salad Mix", "Tomato", "Peppers", "Kale"],
     sizes: ["each", "1 bunch", "16 oz bag", "1 lb", "2 lb bag", "3 lb bag", "5 lb bag"],
   },
   Dairy: {

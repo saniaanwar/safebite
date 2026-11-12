@@ -1,13 +1,18 @@
 import { ObjectId } from "mongodb";
 import { db } from "./connection.js";
 
+const CATEGORY_ORDER = [
+  "Produce", "Dairy", "Meat", "Seafood", "Bakery",
+  "Snacks", "Frozen", "Beverages", "Pantry", "Baby Food",
+];
+
 export async function listRecalls({
   search = "",
   category = "",
   classification = "",
   status = "",
   page = 1,
-  pageSize = 10,
+  pageSize = 8,
 } = {}) {
   const matches = {};
 
@@ -34,13 +39,21 @@ export async function listRecalls({
 
   const collection = db.collection("recalls");
 
-  // runs page query and the total count
   const [recalls, total] = await Promise.all([
     collection
-      .find(matches)
-      .sort({ recallDate: -1, _id: -1 })
-      .skip((page - 1) * pageSize)
-      .limit(pageSize)
+      .aggregate([
+        { $match: matches },
+        // categories position for sorting
+        {
+          $addFields: {
+            categoryOrder: { $indexOfArray: [CATEGORY_ORDER, "$category"] },
+          },
+        },
+        { $sort: { categoryOrder: 1, product: 1, _id: 1 } },
+        { $skip: (page - 1) * pageSize },
+        { $limit: pageSize },
+        { $project: { categoryOrder: 0 } },
+      ])
       .toArray(),
     collection.countDocuments(matches),
   ]);
