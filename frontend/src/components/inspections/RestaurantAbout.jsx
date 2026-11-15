@@ -46,9 +46,9 @@ function RestaurantAbout() {
       <div className="restaurant-about__data" id="restaurant-data">
         <h3>About the restaurant data</h3>
         <p>
-          Restaurant profiles were generated with Mockaroo, and each restaurant
-          has five generated inspections, includes 200 fictional restaurant
-          profiles and 1,000 synthetic inspection records. Community reports are
+          Restaurant profiles were generated with Mockaroo. The demonstration
+          includes 200 fictional restaurants and 1,000 synthetic inspection
+          records, with five inspections per restaurant. Community reports are
           observations submitted by users of the demonstration.
         </p>
 

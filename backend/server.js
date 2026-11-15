@@ -20,10 +20,6 @@ const frontendDirectory = path.join(__dirname, "../frontend/dist");
 
 app.use(express.json());
 
-app.get("/api/test", (req, res) => {
-  res.json({ message: "Backend works" });
-});
-
 const sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret || sessionSecret.length < 32) {
   throw new Error(
