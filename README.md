@@ -90,16 +90,16 @@ The project also demonstrates:
 
 ## Screenshots
 
-| Page | Screenshot |
-|---|---|
-| Home | ![Home](docs/screenshots/home_ss.png) |
-| Food Recalls | ![Food Recalls](docs/screenshots/recalls_ss.png) |
-| Grocery List | ![Grocery List](docs/screenshots/groceryList_ss.png) |
+| Page                   | Screenshot                                                     |
+| ---------------------- | -------------------------------------------------------------- |
+| Home                   | ![Home](docs/screenshots/home_ss.png)                          |
+| Food Recalls           | ![Food Recalls](docs/screenshots/recalls_ss.png)               |
+| Grocery List           | ![Grocery List](docs/screenshots/groceryList_ss.png)           |
 | Restaurant Inspections | ![Restaurant Inspections](docs/screenshots/inspections_ss.png) |
-| Community Reports | ![Community Reports](docs/screenshots/reports_ss.png) |
-| About | ![About](docs/screenshots/about_ss.png) |
-| Sign In | ![Sign In](docs/screenshots/signIn_ss.png) |
-| Sign Up | ![Sign Up](docs/screenshots/signUp_ss.png) |
+| Community Reports      | ![Community Reports](docs/screenshots/reports_ss.png)          |
+| About                  | ![About](docs/screenshots/about_ss.png)                        |
+| Sign In                | ![Sign In](docs/screenshots/signIn_ss.png)                     |
+| Sign Up                | ![Sign Up](docs/screenshots/signUp_ss.png)                     |
 
 ## Technologies
 
@@ -119,20 +119,20 @@ The project does not use Mongoose, Axios, or CORS.
 
 ## Project Structure
 
-| Location | Purpose |
-|---|---|
-| `backend/server.js` | Express app, sessions, Passport, and route setup |
-| `backend/db/` | Database connection and collection queries |
-| `backend/routes/` | API routes |
-| `backend/middleware/` | Authentication, CSRF, and rate-limiting middleware |
-| `backend/auth/` | Passport, password hashing, and session store |
-| `backend/seed/` | Synthetic data seed scripts |
-| `frontend/src/components/` | React components, each with its own CSS file |
-| `frontend/src/components/recalls/` | Food Recalls page components |
-| `frontend/src/components/grocery/` | Grocery List page components |
-| `frontend/src/components/inspections/` | Restaurant Inspections page components |
-| `frontend/src/components/auth/` | Sign-in and sign-up components |
-| `frontend/public/` | Images and logo |
+| Location                               | Purpose                                            |
+| -------------------------------------- | -------------------------------------------------- |
+| `backend/server.js`                    | Express app, sessions, Passport, and route setup   |
+| `backend/db/`                          | Database connection and collection queries         |
+| `backend/routes/`                      | API routes                                         |
+| `backend/middleware/`                  | Authentication, CSRF, and rate-limiting middleware |
+| `backend/auth/`                        | Passport, password hashing, and session store      |
+| `backend/seed/`                        | Synthetic data seed scripts                        |
+| `frontend/src/components/`             | React components, each with its own CSS file       |
+| `frontend/src/components/recalls/`     | Food Recalls page components                       |
+| `frontend/src/components/grocery/`     | Grocery List page components                       |
+| `frontend/src/components/inspections/` | Restaurant Inspections page components             |
+| `frontend/src/components/auth/`        | Sign-in and sign-up components                     |
+| `frontend/public/`                     | Images and logo                                    |
 
 ## Data
 
@@ -148,7 +148,7 @@ For real recalls, see the [FDA recalls, market withdrawals, and safety alerts pa
 
 ## Design Documentation
 
-See the [SafeBite design outline](https://docs.google.com/document/d/1rh28pC1aRfVK-3g5nUqkN65wGww_WuGRY8YulFWGJNE/edit) for the project description, personas, user stories, and design work (Drive access may be required).
+See the [SafeBite design outline](https://docs.google.com/document/d/1QutIjXoXR5xkKp8BfLGKfDtLsXqUS0UgF2u51Gt6iL4/edit?tab=t.0#heading=h.y6f7mk8ekwu5) for the project description, personas, user stories, and design work (Drive access may be required).
 
 ## Installation and Local Development
 
@@ -224,34 +224,34 @@ Open `http://localhost:5173`. Vite forwards `/api` requests to the backend on po
 
 ### Recalls
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/recalls` | List recalls. Query: `search`, `category`, `classification`, `status`, `page`, `pageSize` (max 50) |
-| GET | `/api/recalls/:id` | Get one recall |
+| Method | Endpoint           | Description                                                                                        |
+| ------ | ------------------ | -------------------------------------------------------------------------------------------------- |
+| GET    | `/api/recalls`     | List recalls. Query: `search`, `category`, `classification`, `status`, `page`, `pageSize` (max 50) |
+| GET    | `/api/recalls/:id` | Get one recall                                                                                     |
 
 ### Grocery List (sign-in required; writes require a CSRF token)
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/grocery-items` | List your items, each with matching ongoing recalls |
-| POST | `/api/grocery-items` | Add an item (`{ name }`) |
-| PUT | `/api/grocery-items/:itemId` | Rename an item (`{ name }`) |
-| DELETE | `/api/grocery-items/:itemId` | Remove an item |
+| Method | Endpoint                     | Description                                         |
+| ------ | ---------------------------- | --------------------------------------------------- |
+| GET    | `/api/grocery-items`         | List your items, each with matching ongoing recalls |
+| POST   | `/api/grocery-items`         | Add an item (`{ name }`)                            |
+| PUT    | `/api/grocery-items/:itemId` | Rename an item (`{ name }`)                         |
+| DELETE | `/api/grocery-items/:itemId` | Remove an item                                      |
 
 ### Authentication, Restaurants, and Reports
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/auth/session` | Read the current session and CSRF token |
-| POST | `/api/auth/register` | Register an account |
-| POST | `/api/auth/login` | Sign in |
-| POST | `/api/auth/logout` | Sign out |
-| GET | `/api/restaurants` | List restaurants with `name`, `neighborhood`, `result`, `sort`, `page`, and `pageSize` (max 50) |
-| GET | `/api/restaurants/:restaurantId` | Read restaurant details and inspection history |
-| GET | `/api/restaurants/:restaurantId/reports` | List community reports |
-| POST | `/api/restaurants/:restaurantId/reports` | Post a report while signed in |
-| PUT | `/api/reports/:reportId` | Edit your own report |
-| DELETE | `/api/reports/:reportId` | Delete your own report |
+| Method | Endpoint                                 | Description                                                                                     |
+| ------ | ---------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| GET    | `/api/auth/session`                      | Read the current session and CSRF token                                                         |
+| POST   | `/api/auth/register`                     | Register an account                                                                             |
+| POST   | `/api/auth/login`                        | Sign in                                                                                         |
+| POST   | `/api/auth/logout`                       | Sign out                                                                                        |
+| GET    | `/api/restaurants`                       | List restaurants with `name`, `neighborhood`, `result`, `sort`, `page`, and `pageSize` (max 50) |
+| GET    | `/api/restaurants/:restaurantId`         | Read restaurant details and inspection history                                                  |
+| GET    | `/api/restaurants/:restaurantId/reports` | List community reports                                                                          |
+| POST   | `/api/restaurants/:restaurantId/reports` | Post a report while signed in                                                                   |
+| PUT    | `/api/reports/:reportId`                 | Edit your own report                                                                            |
+| DELETE | `/api/reports/:reportId`                 | Delete your own report                                                                          |
 
 Report writes require a signed-in session and a CSRF token. The server checks ownership before updating or deleting a report.
 
@@ -283,7 +283,7 @@ Implemented considerations include:
 
 ## Peer Code Review
 
-***In progress***
+**_In progress_**
 
 ## Presentation and Demo Video
 
