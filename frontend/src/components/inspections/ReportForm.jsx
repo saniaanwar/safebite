@@ -1,6 +1,10 @@
 import { useEffect, useId, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { getTodayInBoston, validateReportInput } from "./reportValidation";
+import {
+  EARLIEST_VISIT_DATE,
+  getTodayInBoston,
+  validateReportInput,
+} from "./reportValidation";
 import "./ReportForm.css";
 
 function ReportForm({ initialReport = null, onSave, onCancel }) {
@@ -136,6 +140,7 @@ function ReportForm({ initialReport = null, onSave, onCancel }) {
             name="visitDate"
             type="date"
             value={fields.visitDate}
+            min={EARLIEST_VISIT_DATE}
             max={maximumDate}
             required
             onChange={handleChange}
@@ -147,7 +152,7 @@ function ReportForm({ initialReport = null, onSave, onCancel }) {
           />
 
           <p className="report-form__help" id={`${formId}-date-help`}>
-            Choose today or an earlier date, based on Boston time.
+            Choose a date from January 1, 2000 to today, based on Boston time.
           </p>
 
           {feedback.errors.visitDate && (

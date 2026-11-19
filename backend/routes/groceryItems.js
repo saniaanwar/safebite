@@ -40,8 +40,19 @@ router.get("/", requireUser, async (req, res) => {
 });
 
 router.post("/", requireUser, requireCsrf, validateName, async (req, res) => {
-  const item = await createGroceryItem(res.locals.userId, res.locals.itemName);
-  res.status(201).json({ item });
+  try {
+    const item = await createGroceryItem(
+      res.locals.userId,
+      res.locals.itemName,
+    );
+    res.status(201).json({ item });
+  } catch (error) {
+    // the shared error handler would hide the message of a full list
+    if (error.status === 409) {
+      return res.status(409).json({ error: error.message });
+    }
+    throw error;
+  }
 });
 
 router.put(

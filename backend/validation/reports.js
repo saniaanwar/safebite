@@ -1,4 +1,5 @@
 const allowedFields = new Set(["visitDate", "description"]);
+const EARLIEST_VISIT_DATE = "2000-01-01";
 
 const bostonDateFormatter = new Intl.DateTimeFormat("en-US", {
   timeZone: "America/New_York",
@@ -53,6 +54,8 @@ export function validateReportInput(body, now = new Date()) {
     errors.visitDate = "Enter a real visit date using YYYY-MM-DD.";
   } else if (visitDate > todayInBoston(now)) {
     errors.visitDate = "Visit date cannot be later than today in Boston.";
+  } else if (visitDate < EARLIEST_VISIT_DATE) {
+    errors.visitDate = "Visit date cannot be earlier than January 1, 2000.";
   }
 
   if (

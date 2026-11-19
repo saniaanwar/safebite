@@ -15,7 +15,7 @@ import "./GroceryListPage.css";
 
 function GroceryListPage() {
   const { user, loading: authLoading, openAuth } = useAuth();
-  const userId = user?._id ?? null;
+  const userId = user?.id ?? null;
 
   // results are connected with the user they belong to
   const [list, setList] = useState({ userId: null, items: [], error: "" });

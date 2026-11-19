@@ -18,7 +18,8 @@ function escapeRegex(text) {
 
 // recalls whose product or brand contains the item name in grocery list
 export async function findRecallMatches(name) {
-  const pattern = { $regex: escapeRegex(name), $options: "i" };
+  // match at the start of a word so "egg" does not match "veggie"
+  const pattern = { $regex: `\\b${escapeRegex(name)}`, $options: "i" };
 
   return recalls
     .find({
@@ -34,7 +35,6 @@ export async function findRecallMatches(name) {
       consumerAction: 1,
     })
     .sort({ recallDate: -1 })
-    .limit(5)
     .toArray();
 }
 
