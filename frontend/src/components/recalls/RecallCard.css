@@ -18,7 +18,7 @@
   color: var(--muted);
 }
 
-.recall-card h3 {
+.recall-card h3 { /* This font here looks really appetizing for a recalled foor */
   margin: 0;
   font-size: 1.35rem;
   line-height: 1.2;
