@@ -233,11 +233,11 @@ const VARIANTS = {
   ],
 };
 
-const BRANDS = [
+const BRANDS = [ // I can't believe people still shop from these companies if these 10 alone are responsible for 1k+ recalls
   "GreenLeaf Farms",
   "Boston Fresh",
   "Sunny Farms",
-  "Maple Ridge",
+  "Maple Ridge", // NO! This was one of my favorite brands!!! I'll never buy thier milk again!
   "Coastal Kitchen",
   "Golden Fields",
   "Blue Hill Foods",

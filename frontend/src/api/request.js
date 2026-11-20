@@ -38,7 +38,7 @@ export async function requestJson(url, options = {}) {
       !url.startsWith("/api/auth/") &&
       typeof window !== "undefined"
     ) {
-      window.dispatchEvent(new Event("safebite:session-changed"));
+      window.dispatchEvent(new Event("safebite:session-changed")); // This is a good way to handle this
     }
     const error = new Error(
       data?.error || "Could not complete the request. Please try again.",

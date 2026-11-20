@@ -1,6 +1,6 @@
 const attempts = new Map();
 const WINDOW_MS = 15 * 60 * 1000;
-const MAX_ATTEMPTS = 30;
+const MAX_ATTEMPTS = 30; // I feel like this is a lot of attempts (then again we didn't even think to limit this in our project, so good job)
 
 // Bound repeated password attempts for this single-server course application.
 export function limitAuthAttempts(req, res, next) {
@@ -20,7 +20,7 @@ export function limitAuthAttempts(req, res, next) {
     res.set("Retry-After", String(Math.ceil((entry.resetAt - now) / 1000)));
     return res
       .status(429)
-      .json({ error: "Too many sign-in attempts. Please try again later." });
+      .json({ error: "Too many sign-in attempts. Please try again later." }); // for usability it might make sense to tell the user how long they need to wait
   }
   return next();
 }

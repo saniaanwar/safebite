@@ -22,7 +22,7 @@ export async function findRecallMatches(name) {
 
   return recalls
     .find({
-      status: "Ongoing",
+      status: "Ongoing", // Just curious, do the recalls have like end dates? 
       $or: [{ product: pattern }, { brand: pattern }],
     })
     .project({
