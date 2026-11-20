@@ -11,7 +11,7 @@ export function ensureSessionIndexes() {
 }
 
 // Implement the express-session store interface with the native MongoDB driver.
-export default class MongoSessionStore extends session.Store {
+export default class MongoSessionStore extends session.Store { //Interesting I had not considered using an interface like this
   get(sid, callback) {
     sessions
       .findOne({ _id: storeId(sid), expiresAt: { $gt: new Date() } })
