@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // The homepage looks good!
 import SiteFooter from "./SiteFooter.jsx";
 import "./Home.css";
 
